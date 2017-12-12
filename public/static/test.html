@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/socket.io.js"></script>
+    <script>
+        room=window.location.href;
+        load=()=>{
+            socket = io('http://localhost:3001?r='+room);
+            socket.on('connect',()=>{
+            console.log("SOCKETID:"+socket.id);
+            socket.emit('chat message', "连接到服务器");
+            socket.on('chat message', (m) => {
+                    
+                    //c=document.createElement("p").innerText(m);
+                    (s=document.createElement("div")).innerHTML=m
+                    document.body.appendChild(s);
+                    console.log(m);
+            });
+            socket.on('disconnect', () => {
+                console.log("服务器连接断开");
+            });
+           
+            socket.on('message',function(m){
+                console.log("on meeeage")
+            })
+         });
+        
+         socket.on('packet', (m) => {
+            console.log(m);
+         });
+         
+         socket.open(()=>{
+            console.log("SOCKETID:"+socket.id);
+             console.log("open")
+         })
+        }
+           
+        //  socket.message((m)=>{
+        //     console.log(m);
+        //  })
+    
+    </script>
+</head>
+<body onload="load()">
+
+</body>
+</html>
